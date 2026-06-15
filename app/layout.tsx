@@ -5,6 +5,7 @@ import { getMessages, getLocale } from "next-intl/server";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemedToaster } from "@/components/themed-toaster";
 import { AuthProvider } from "@/components/auth-provider";
+import { DiscordProvider } from "@/components/discord-provider";
 import { PublicConfigProvider } from "@/components/public-config-provider";
 import { QueryProvider } from "@/components/query-provider";
 import { getPublicConfig } from "@/lib/public-config";
@@ -91,6 +92,7 @@ export default async function RootLayout({
             <QueryProvider>
               <PublicConfigProvider initialConfig={publicConfig}>
                 <AuthProvider>{children}</AuthProvider>
+              <DiscordProvider />
               </PublicConfigProvider>
             </QueryProvider>
             <ThemedToaster />
