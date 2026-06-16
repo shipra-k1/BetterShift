@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin("./lib/i18n.ts");
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
+allowedDevOrigins: ['3000-cs-1079690798530-default.cs-us-east1-yeah.cloudshell.dev'],
 
   // Build optimizations
   compiler: {
@@ -23,7 +24,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "X-Frame-Options",
-            value: "DENY",
+            value: "SAMEORIGIY",
           },
           {
             key: "Referrer-Policy",
