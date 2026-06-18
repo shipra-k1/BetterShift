@@ -322,10 +322,10 @@ export async function syncExternalCalendar(
       .map((s) => s.id);
 
     // Perform batch operations in a transaction for atomicity and better performance
-    const transactionResult = db.transaction((tx) => {
+    const transactionResult = await db.transaction(async (tx) => {
       // Insert new shifts in one batch
       if (shiftsToInsert.length > 0) {
-        tx.insert(shifts).values(shiftsToInsert).run();
+        await tx.insert(shifts).values(shiftsToInsert);
       }
 
       // Update existing shifts (SQLite doesn't support batch updates directly,
@@ -333,26 +333,26 @@ export async function syncExternalCalendar(
       if (shiftsToUpdate.length > 0) {
         for (const shiftUpdate of shiftsToUpdate) {
           const { id, ...updateData } = shiftUpdate;
-          tx.update(shifts).set(updateData).where(eq(shifts.id, id)).run();
+          await tx.update(shifts).set(updateData).where(eq(shifts.id, id));
         }
       }
 
       // Delete shifts that are no longer in the external calendar in one batch
       if (shiftIdsToDelete.length > 0) {
-        tx.delete(shifts).where(inArray(shifts.id, shiftIdsToDelete)).run();
+        await tx.delete(shifts).where(inArray(shifts.id, shiftIdsToDelete));
       }
 
       // Update last sync time
-      tx.update(externalSyncs)
+      await tx.update(externalSyncs)
         .set({
           lastSyncedAt: new Date(),
           updatedAt: new Date(),
         })
-        .where(eq(externalSyncs.id, syncId))
-        .run();
+        .where(eq(externalSyncs.id, syncId));
+        
 
       // Log the sync result
-      tx.insert(syncLogs)
+      await tx.insert(syncLogs)
         .values({
           id: crypto.randomUUID(),
           calendarId: externalSync.calendarId,
@@ -365,8 +365,8 @@ export async function syncExternalCalendar(
           shiftsDeleted: shiftIdsToDelete.length,
           syncType,
           syncedAt: new Date(),
-        })
-        .run();
+        });
+        
 
       // Return transaction stats
       return {
