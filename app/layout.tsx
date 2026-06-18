@@ -23,7 +23,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "BetterShift",
-  description: "Your favorite shift management application!",
+  description: "Your favorite shift management application! - Powered by OllieBoard",
   applicationName: "BetterShift",
   manifest: "/manifest.json",
   appleWebApp: {
