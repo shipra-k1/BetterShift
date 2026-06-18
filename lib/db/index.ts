@@ -1,19 +1,13 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
+import { drizzle } from "drizzle-orm/libsql";
+import { createClient } from "@libsql/client";
 import * as schema from "./schema";
-import path from "path";
-import fs from "fs";
 
-// Determine database path
-const dbPath =
-  process.env.DATABASE_URL?.replace("file:", "") ||
-  path.join(process.cwd(), "data", "sqlite.db");
+const url = process.env.DATABASE_URL || "file:./data/sqlite.db";
+const authToken = process.env.DATABASE_AUTH_TOKEN;
 
-// Ensure the data directory exists
-const dataDir = path.dirname(dbPath);
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
+const client = createClient({
+  url,
+  authToken,
+});
 
-const sqlite = new Database(dbPath);
-export const db = drizzle(sqlite, { schema });
+export const db = drizzle(client, { schema });

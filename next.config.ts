@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin("./lib/i18n.ts");
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
-allowedDevOrigins: ['3000-cs-1079690798530-default.cs-us-east1-yeah.cloudshell.dev'],
+allowedDevOrigins: ['3000-cs-1079690798530-default.cs-us-east1-yeah.cloudshell.dev', 'mystified-throwing-climate.ngrok-free.dev'],
 
   // Build optimizations
   compiler: {
@@ -24,7 +24,7 @@ allowedDevOrigins: ['3000-cs-1079690798530-default.cs-us-east1-yeah.cloudshell.d
           },
           {
             key: "X-Frame-Options",
-            value: "SAMEORIGIY",
+            value: "SAMEORIGN",
           },
           {
             key: "Referrer-Policy",
